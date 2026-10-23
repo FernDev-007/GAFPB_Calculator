@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How GAFPB Scoring Works</title>
+  <meta name="description" content="How the German Armed Forces Proficiency Badge is scored.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html">USAFA GAFPB Score Calculator</a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="index.html">Calculator</a>
+        <a href="scoring.html" aria-current="page">How Scoring Works</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap doc">
+    <p class="doc-actions"><a class="btn btn-primary" href="index.html">← Back to calculator</a></p>
+
+    <!-- 1 -->
+    <section class="card">
+      <h2><span class="step" aria-hidden="true">1</span>The short version</h2>
+      <p>Your badge is decided by three scored events: the <strong>Basic Fitness Test (BFT)</strong>, <strong>pistol</strong> and <strong>ruck march</strong>. Each earns a level of Bronze, Silver or Gold.</p>
+      <div class="callout"><strong>Your badge is the lowest of those three levels.</strong> A Gold BFT, a Silver pistol score and a Bronze ruck earns Bronze.</div>
+      <p>You also have to meet every BFT minimum and pass all three pass/fail events (first aid, NBC/MOPP4 and the swim). Missing any of them means no badge.</p>
+    </section>
+
+    <!-- 2 -->
+    <section class="card">
+      <h2><span class="step" aria-hidden="true">2</span>BFT minimums</h2>
+      <p>The three BFT events are done in this order within 90 minutes. Missing any minimum fails the BFT, regardless of age or gender.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Event</th><th>Minimum to pass</th></tr></thead>
+          <tbody>
+            <tr><td>11 × 10 m sprint</td><td>60.0 sec or faster</td></tr>
+            <tr><td>Flexed-arm hang</td><td>5.0 sec or longer</td></tr>
+            <tr><td>1000 m run</td><td>6:30 or faster</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section class="card">
+      <h2><span class="step" aria-hidden="true">3</span>Earning points</h2>
+      <p>Each event starts at <strong>100 points</strong> at the minimum. Better performance earns more points on a straight-line scale.</p>
+      <ul>
+        <li><strong>Sprint:</strong> about 16.7 points for every second faster than 60. Times are recorded to the tenth and rounded <em>up</em> to the next whole second, so 41.3 scores as 42.</li>
+        <li><strong>Flexed-arm hang:</strong> 5 points for every second held past 5. Times are rounded <em>down</em> to the whole second, so 52.7 scores as 52.</li>
+        <li><strong>1000 m run:</strong> 100 points for every 55 seconds faster than 6:30, or about 1.8 points per second.</li>
+      </ul>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Points</th><th>Sprint</th><th>Hang</th><th>1000 m run</th></tr></thead>
+          <tbody>
+            <tr><td>100 (minimum)</td><td>60 s</td><td>5 s</td><td>6:30</td></tr>
+            <tr><td>200</td><td>54 s</td><td>25 s</td><td>5:35</td></tr>
+            <tr><td>300</td><td>48 s</td><td>45 s</td><td>4:40</td></tr>
+            <tr><td>400</td><td>42 s</td><td>65 s</td><td>3:45</td></tr>
+            <tr><td>500 (maximum)</td><td>36 s</td><td>85 s</td><td>2:50</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>These are your <strong>basic points</strong>. Each event's final score, including any bonuses, is capped at 500.</p>
+    </section>
+
+    <!-- 4 -->
+    <section class="card">
+      <h2><span class="step" aria-hidden="true">4</span>Age and gender bonuses</h2>
+      <p>Bonuses are calculated from your basic points and added to each event.</p>
+      <h3>Age (36 and older)</h3>
+      <code class="formula">age bonus = basic points × (age − 35) × 0.005</code>
+      <p>That's 0.5% per year past 35. A 40-year-old gets +2.5% on each event.</p>
+      <h3>Female</h3>
+      <ul>
+        <li>Sprint: +15% of basic points</li>
+        <li>Flexed-arm hang: +40% of basic points</li>
+        <li>1000 m run: +15% of basic points</li>
+      </ul>
+      <code class="formula">event score = basic + age bonus + gender bonus (max 500)</code>
+      <h3>Worked example</h3>
+      <p>A 40-year-old female holds the flexed-arm hang for 45.6 seconds, which counts as 45 seconds and earns 300 basic points.</p>
+      <ul>
+        <li>Age bonus: 300 × 5 × 0.005 = <strong>7.50</strong></li>
+        <li>Gender bonus: 300 × 0.40 = <strong>120</strong></li>
+        <li>Event score: 300 + 7.50 + 120 = <strong>427.50</strong></li>
+      </ul>
+    </section>
+
+    <!-- 5 -->
+    <section class="card">
+      <h2><span class="step" aria-hidden="true">5</span>BFT average and levels</h2>
+      <p>Your three event scores are averaged and cut off at two decimal places, without rounding. For example, 1205 ÷ 3 = 401.66.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>BFT average</th><th>Rating</th><th>Level</th></tr></thead>
+          <tbody>
+            <tr><td>100 – 199.99</td><td>Fair</td><td><span class="tag tag-fail">No Badge</span></td></tr>
+            <tr><td>200 – 299.99</td><td>Satisfactory</td><td><span class="tag tag-1">Bronze</span></td></tr>
+            <tr><td>300 – 399.99</td><td>Good</td><td><span class="tag tag-2">Silver</span></td></tr>
+            <tr><td>400 and above</td><td>Very Good</td><td><span class="tag tag-3">Gold</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6 -->
+    <section class="card">
+      <h2><span class="step" aria-hidden="true">6</span>Pass / fail events</h2>
+      <p>These don't affect your level, but failing any one means no badge.</p>
+      <ul>
+        <li><strong>First aid:</strong> Combat Life Saver (or equivalent) within the last 3 years, certified by your leadership.</li>
+        <li><strong>NBC / MOPP4:</strong> put on the protective mask in 9 seconds and go to MOPP4, passed within the last year and certified by your leadership.</li>
+        <li><strong>100 m swim in uniform:</strong> swim 100 m in under 4 minutes, then undress in deep water without support. Any stroke is allowed, and there's no time limit for undressing.</li>
+      </ul>
+    </section>
+
+    <!-- 7 -->
+    <section class="card">
+      <h2><span class="step" aria-hidden="true">7</span>Pistol (P-ES-6)</h2>
+      <p>Ten rounds fired standing from the low-ready position. Each hit inside the scoring zones and within the time limit is 1 point. Rounds fired after time expires count as misses.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Part</th><th>Distance</th><th>Rounds</th><th>Time</th><th>What's fired</th></tr></thead>
+          <tbody>
+            <tr><td>A</td><td>5 m</td><td>2</td><td>3 sec</td><td>Two quick shots at one target</td></tr>
+            <tr><td>B</td><td>10 m</td><td>2</td><td>4 sec</td><td>Same as A, without loading first</td></tr>
+            <tr><td>C</td><td>10 m</td><td>3</td><td>4 + 3 sec</td><td>One shot at each of two targets, then one at Zone A on command</td></tr>
+            <tr><td>D</td><td>15 m</td><td>3</td><td>4 + 3 sec</td><td>Same as C, then unload on command</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Hits</th><th>Level</th></tr></thead>
+          <tbody>
+            <tr><td>9 – 10</td><td><span class="tag tag-3">Gold</span></td></tr>
+            <tr><td>8</td><td><span class="tag tag-2">Silver</span></td></tr>
+            <tr><td>7</td><td><span class="tag tag-1">Bronze</span></td></tr>
+            <tr><td>0 – 6</td><td><span class="tag tag-fail">No Badge</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 8 -->
+    <section class="card">
+      <h2><span class="step" aria-hidden="true">8</span>Ruck march</h2>
+      <p>March with a 15 kg (33 lb) pack. The distance you complete sets your level, and you must finish within its time limit, which works out to 10 minutes per kilometer.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Distance</th><th>Time limit</th><th>Level</th></tr></thead>
+          <tbody>
+            <tr><td>6 km (3.73 mi)</td><td>1:00:00</td><td><span class="tag tag-1">Bronze</span></td></tr>
+            <tr><td>9 km (5.6 mi)</td><td>1:30:00</td><td><span class="tag tag-2">Silver</span></td></tr>
+            <tr><td>12 km (7.46 mi)</td><td>2:00:00</td><td><span class="tag tag-3">Gold</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Finishing over the time limit means no badge.</p>
+    </section>
+
+    <p class="doc-actions bottom"><a class="btn btn-primary" href="index.html">← Back to calculator</a></p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Unofficial tool. Official results are determined by GAFPB graders.</div>
+  </footer>
+</body>
+</html>

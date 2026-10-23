@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>USAFA GAFPB Score Calculator</title>
+  <meta name="description" content="Calculate your German Armed Forces Proficiency Badge result: Gold, Silver, Bronze, or No Badge.">
+  <link rel="stylesheet" href="style.css">
+  <script src="calculator.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html">USAFA GAFPB Score Calculator</a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="index.html" aria-current="page">Calculator</a>
+        <a href="scoring.html">How Scoring Works</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <p class="intro">Enter your results below. Your badge level updates as you type.</p>
+
+    <div class="layout">
+      <form id="calc" novalidate autocomplete="off">
+
+        <!-- 1. Participant -->
+        <section class="card" aria-labelledby="h-participant">
+          <h2 id="h-participant"><span class="step" aria-hidden="true">1</span>Participant</h2>
+          <div class="grid-2">
+            <div class="field">
+              <label for="age">Age</label>
+              <input id="age" type="number" inputmode="numeric" min="17" max="65" placeholder="e.g. 22" aria-describedby="age-help age-msg">
+              <p class="help" id="age-help">Age reached this calendar year</p>
+              <p class="msg" id="age-msg"></p>
+            </div>
+            <div class="field">
+              <label for="gender">Gender</label>
+              <select id="gender" aria-describedby="gender-msg">
+                <option value="">Select</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+              </select>
+              <p class="msg" id="gender-msg"></p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. Basic Fitness Test -->
+        <section class="card" aria-labelledby="h-bft">
+          <h2 id="h-bft"><span class="step" aria-hidden="true">2</span>Basic Fitness Test</h2>
+          <div class="stack">
+            <div class="field">
+              <label for="sprint">11 × 10 m sprint (seconds)</label>
+              <input id="sprint" type="text" inputmode="decimal" placeholder="e.g. 41.3" aria-describedby="sprint-help sprint-msg">
+              <p class="help" id="sprint-help">Seconds and tenths · must be 60.0 or faster</p>
+              <p class="msg" id="sprint-msg"></p>
+            </div>
+            <div class="field">
+              <label for="hang">Flexed-arm hang (seconds)</label>
+              <input id="hang" type="text" inputmode="decimal" placeholder="e.g. 52.7" aria-describedby="hang-help hang-msg">
+              <p class="help" id="hang-help">Seconds and tenths · must be 5.0 or longer</p>
+              <p class="msg" id="hang-msg"></p>
+            </div>
+            <div class="field">
+              <label for="run">1000 m run (minutes:seconds)</label>
+              <input id="run" type="text" inputmode="decimal" placeholder="e.g. 3:52" aria-describedby="run-help run-msg">
+              <p class="help" id="run-help">Type 3:52 or 3.52 · must be 6:30 or faster</p>
+              <p class="msg" id="run-msg"></p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Pass / Fail -->
+        <section class="card" aria-labelledby="h-pf">
+          <h2 id="h-pf"><span class="step" aria-hidden="true">3</span>Pass / Fail Events</h2>
+          <div class="checks">
+            <label class="check">
+              <input id="firstAid" type="checkbox">
+              <span><span class="check-title">First aid</span><span class="help">CLS (or equivalent) completed within the last 3 years</span></span>
+            </label>
+            <label class="check">
+              <input id="nbc" type="checkbox">
+              <span><span class="check-title">NBC / MOPP4</span><span class="help">Mask in 9 sec and MOPP4 passed within the last year</span></span>
+            </label>
+            <label class="check">
+              <input id="swim" type="checkbox">
+              <span><span class="check-title">100 m swim in uniform</span><span class="help">Under 4:00, then undressed in deep water</span></span>
+            </label>
+          </div>
+        </section>
+
+        <!-- 4. Pistol -->
+        <section class="card" aria-labelledby="h-pistol">
+          <h2 id="h-pistol"><span class="step" aria-hidden="true">4</span>Pistol (P-ES-6)</h2>
+          <div class="field">
+            <label for="pistol">Hits (0–10)</label>
+            <input id="pistol" type="number" inputmode="numeric" min="0" max="10" placeholder="e.g. 9" aria-describedby="pistol-help pistol-msg">
+            <p class="help" id="pistol-help">9–10 Gold · 8 Silver · 7 Bronze</p>
+            <p class="msg" id="pistol-msg"></p>
+          </div>
+        </section>
+
+        <!-- 5. Ruck -->
+        <section class="card" aria-labelledby="h-ruck">
+          <h2 id="h-ruck"><span class="step" aria-hidden="true">5</span>Ruck March</h2>
+          <div class="grid-2">
+            <div class="field">
+              <label for="ruckDist">Distance completed</label>
+              <select id="ruckDist" aria-describedby="ruckDist-help ruckDist-msg">
+                <option value="">Select distance</option>
+                <option value="6">6 km (3.73 mi) · Bronze</option>
+                <option value="9">9 km (5.6 mi) · Silver</option>
+                <option value="12">12 km (7.46 mi) · Gold</option>
+              </select>
+              <p class="help" id="ruckDist-help">15 kg (33 lb) pack</p>
+              <p class="msg" id="ruckDist-msg"></p>
+            </div>
+            <div class="field">
+              <label for="ruckTime">Finish time</label>
+              <input id="ruckTime" type="text" inputmode="decimal" placeholder="e.g. 1:52:30" aria-describedby="ruckTime-help ruckTime-msg">
+              <p class="help" id="ruckTime-help">h:mm:ss or mm:ss · limits 1:00:00 / 1:30:00 / 2:00:00</p>
+              <p class="msg" id="ruckTime-msg"></p>
+            </div>
+          </div>
+        </section>
+      </form>
+
+      <!-- Results -->
+      <aside class="results" id="results" aria-labelledby="results-title">
+        <div class="card result-card">
+          <h2 id="results-title">Result</h2>
+          <div id="badge" class="badge pending" role="status" aria-live="polite">
+            <span class="medal" aria-hidden="true"></span>
+            <span id="badge-text">Awaiting results</span>
+          </div>
+          <p id="summary" class="summary">Enter all events to see your result.</p>
+
+          <dl class="stats">
+            <dt>BFT average</dt><dd id="stat-avg">—</dd>
+            <dt>Limited by</dt><dd id="stat-limit">—</dd>
+          </dl>
+
+          <h3 id="breakdown-title" class="breakdown-title" hidden>Event breakdown</h3>
+          <ul id="breakdown" class="breakdown"></ul>
+
+          <button type="button" id="reset" class="btn btn-secondary">Reset</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Unofficial tool. Official results are determined by GAFPB graders.</div>
+  </footer>
+
+  <button type="button" id="chip" class="chip" data-level="pending" aria-label="Jump to result">
+    <span class="chip-label">Result</span>
+    <span id="chip-text" class="chip-text">Awaiting results</span>
+  </button>
+</body>
+</html>
