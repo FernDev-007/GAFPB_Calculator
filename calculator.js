@@ -9,13 +9,15 @@
 const CONFIG = {
   age: { min: 17, max: 65, bonusFrom: 36, bonusPerYear: 0.005 },
 
-  // Final event score (basic + bonuses) is capped at this value.
+  // Final event score (basic + bonuses, rounded) is capped at this value.
   eventCap: 500,
 
-  // 11 x 10 m sprint: 60 s = 100 pts, every 6 s faster = +100 pts.
-  sprint: { maxPass: 60, secondsPer100: 6 },
+  // 11 x 10 m sprint: 60 s = 100 pts, +15 pts per second faster.
+  // (Same as the spreadsheet's 1000 - 15 x time.) Exact time counts.
+  sprint: { maxPass: 60, pointsPerSecond: 15 },
 
   // Flexed-arm hang: 5 s = 100 pts, +5 pts per additional second.
+  // (Same as the spreadsheet's time x 5 + 75.) Exact time counts.
   hang: { minPass: 5, pointsPerSecond: 5 },
 
   // 1000 m run: 6:30 (390 s) = 100 pts, every 55 s faster = +100 pts.
@@ -96,21 +98,32 @@ function formatDuration(totalSeconds) {
 
 /* ---------------- Scoring ---------------- */
 
-// Sprint: time rounds UP to the next whole second (slower), then scores.
+/*
+ * Rounding matches the official spreadsheet:
+ *  - basic points are NOT rounded (exact times, decimals kept)
+ *  - each event score (basic + bonuses) is rounded to a whole number
+ *  - the BFT average is rounded to a whole number
+ * Excel rounds half away from zero and works to 15 significant digits;
+ * roundExcel does the same so results match the spreadsheet exactly.
+ */
+function roundExcel(x) {
+  const v = Number(x.toPrecision(15));
+  return Math.sign(v) * Math.round(Math.abs(v));
+}
+
+// Sprint: exact time, 100 pts at 60 s, +15 per second faster.
 function sprintBasic(t) {
-  const s = Math.ceil(t - EPS);
-  return Math.round(100 + (CONFIG.sprint.maxPass - s) * 100 / CONFIG.sprint.secondsPer100);
+  return 100 + (CONFIG.sprint.maxPass - t) * CONFIG.sprint.pointsPerSecond;
 }
 
-// Hang: time rounds DOWN to the last whole second, then scores.
+// Hang: exact time, 100 pts at 5 s, +5 per additional second.
 function hangBasic(t) {
-  const s = Math.floor(t + EPS);
-  return 100 + (s - CONFIG.hang.minPass) * CONFIG.hang.pointsPerSecond;
+  return 100 + (t - CONFIG.hang.minPass) * CONFIG.hang.pointsPerSecond;
 }
 
-// Run: whole seconds.
+// Run: whole seconds, 100 pts at 6:30, +100 per 55 s faster.
 function runBasic(sec) {
-  return Math.round(100 + (CONFIG.run.maxPass - sec) * 100 / CONFIG.run.secondsPer100);
+  return 100 + (CONFIG.run.maxPass - sec) / (CONFIG.run.secondsPer100 / 100);
 }
 
 function ageRate(age) {
@@ -121,20 +134,20 @@ function ageRate(age) {
 function eventScore(basic, age, gender, key) {
   const ageBonus = basic * ageRate(age);
   const genderBonus = gender === 'F' ? basic * CONFIG.femaleBonus[key] : 0;
-  const raw = basic + ageBonus + genderBonus;
+  const rounded = roundExcel(basic + ageBonus + genderBonus);
   return {
     basic: basic,
     ageBonus: ageBonus,
     genderBonus: genderBonus,
-    raw: raw,
-    total: Math.min(CONFIG.eventCap, raw),
-    capped: raw > CONFIG.eventCap + EPS
+    rounded: rounded,
+    total: Math.min(CONFIG.eventCap, rounded),
+    capped: rounded > CONFIG.eventCap
   };
 }
 
-// Two decimals, truncated (1205 / 3 = 401.66, as in the official example).
-function truncate2(x) {
-  return Math.floor(x * 100 + 1e-6) / 100;
+// BFT average of the three event scores, rounded to a whole number.
+function bftAverage(a, b, c) {
+  return roundExcel((a + b + c) / 3);
 }
 
 function bftLevel(avg) {
@@ -180,13 +193,13 @@ function compute(raw) {
   // Sprint
   const sprint = parseSeconds(raw.sprint);
   if (sprint === null) missing.push('Sprint');
-  else if (Number.isNaN(sprint)) { err('sprint', 'Enter seconds with tenths, e.g. 41.3'); missing.push('Sprint'); }
+  else if (Number.isNaN(sprint)) { err('sprint', 'Enter seconds, e.g. 41.3'); missing.push('Sprint'); }
   else if (sprint > CONFIG.sprint.maxPass + EPS) warn('sprint', 'Slower than 60.0 sec. BFT minimum not met.');
 
   // Hang
   const hang = parseSeconds(raw.hang);
   if (hang === null) missing.push('Flexed-arm hang');
-  else if (Number.isNaN(hang)) { err('hang', 'Enter seconds with tenths, e.g. 52.7'); missing.push('Flexed-arm hang'); }
+  else if (Number.isNaN(hang)) { err('hang', 'Enter seconds, e.g. 52.7'); missing.push('Flexed-arm hang'); }
   else if (hang < CONFIG.hang.minPass - EPS) warn('hang', 'Under 5.0 sec. BFT minimum not met.');
 
   // Run
@@ -242,7 +255,7 @@ function compute(raw) {
   if (failedMins.length) {
     reasons.push('BFT minimum not met (' + failedMins.join(', ') + ')');
   } else {
-    avg = truncate2((events.sprint.score.total + events.hang.score.total + events.run.score.total) / 3);
+    avg = bftAverage(events.sprint.score.total, events.hang.score.total, events.run.score.total);
     bftLvl = bftLevel(avg);
     if (!bftLvl) reasons.push('BFT average below ' + CONFIG.bft.bronze);
   }
@@ -297,6 +310,11 @@ function fmtPts(x) {
   return Number.isInteger(r) ? String(r) : r.toFixed(2);
 }
 
+// 41 -> "41.0", 42.17 -> "42.17"
+function fmtSec(t) {
+  return Number.isInteger(t * 10) ? t.toFixed(1) : t.toFixed(2);
+}
+
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
@@ -321,7 +339,7 @@ function bftRow(name, ev, timeText, minText) {
   let sub = timeText + ' · basic ' + fmtPts(sc.basic);
   if (sc.ageBonus) sub += ' + ' + fmtPts(sc.ageBonus) + ' age';
   if (sc.genderBonus) sub += ' + ' + fmtPts(sc.genderBonus) + ' gender';
-  if (sc.capped) sub += ' · capped at ' + CONFIG.eventCap;
+  if (sc.capped) sub += ' = ' + sc.rounded + ', capped at ' + CONFIG.eventCap;
   return rowHtml(name, fmtPts(sc.total), sub, 'pass');
 }
 
@@ -399,16 +417,16 @@ function init() {
     else if (lvl > 0) summary.textContent = LEVEL_NAMES[lvl] + ' badge earned.';
     else summary.textContent = 'No badge earned. See the reasons below.';
 
-    statAvg.textContent = r.avg === null ? 'Not scored' : r.avg.toFixed(2);
+    statAvg.textContent = r.avg === null ? 'Not scored' : String(r.avg);
     statLimit.textContent = lvl === 3 ? 'Nothing. All Gold' : r.limitedBy.join('; ');
 
     const ev = r.events;
     let html = '';
-    html += bftRow('Sprint', ev.sprint, ev.sprint.time.toFixed(1) + ' s', '60.0 s');
-    html += bftRow('Flexed-arm hang', ev.hang, ev.hang.time.toFixed(1) + ' s', '5.0 s');
+    html += bftRow('Sprint', ev.sprint, fmtSec(ev.sprint.time) + ' s', '60.0 s');
+    html += bftRow('Flexed-arm hang', ev.hang, fmtSec(ev.hang.time) + ' s', '5.0 s');
     html += bftRow('1000 m run', ev.run, formatMinSec(ev.run.time), '6:30');
-    html += rowHtml('BFT average', r.avg === null ? '—' : r.avg.toFixed(2),
-      r.avg === null ? 'All three BFT minimums must be met' : 'Average of the three event scores', r.bftLvl);
+    html += rowHtml('BFT average', r.avg === null ? '—' : String(r.avg),
+      r.avg === null ? 'All three BFT minimums must be met' : 'Average of the three event scores, rounded', r.bftLvl);
     r.passFail.forEach(p => { html += rowHtml(p.name, p.pass ? 'Pass' : 'Fail', '', p.pass ? 'pass' : 'fail'); });
     html += rowHtml('Pistol (P-ES-6)', r.pistol.hits + ' / ' + CONFIG.pistol.maxHits, '9–10 Gold · 8 Silver · 7 Bronze', r.pistol.level);
     html += rowHtml('Ruck march', formatDuration(r.ruck.time),
@@ -447,6 +465,6 @@ if (typeof document !== 'undefined') {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     CONFIG, compute, sprintBasic, hangBasic, runBasic, eventScore,
-    truncate2, parseSeconds, parseMinSec, parseDuration
+    roundExcel, bftAverage, parseSeconds, parseMinSec, parseDuration
   };
 }
