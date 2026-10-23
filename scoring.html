@@ -50,23 +50,23 @@
       <h2><span class="step" aria-hidden="true">3</span>Earning points</h2>
       <p>Each event starts at <strong>100 points</strong> at the minimum. Better performance earns more points on a straight-line scale.</p>
       <ul>
-        <li><strong>Sprint:</strong> about 16.7 points for every second faster than 60. Times are recorded to the tenth and rounded <em>up</em> to the next whole second, so 41.3 scores as 42.</li>
-        <li><strong>Flexed-arm hang:</strong> 5 points for every second held past 5. Times are rounded <em>down</em> to the whole second, so 52.7 scores as 52.</li>
-        <li><strong>1000 m run:</strong> 100 points for every 55 seconds faster than 6:30, or about 1.8 points per second.</li>
+        <li><strong>Sprint:</strong> 15 points for every second faster than 60. Your exact time counts, so 41.3 s earns 380.5 basic points.</li>
+        <li><strong>Flexed-arm hang:</strong> 5 points for every second held past 5. Your exact time counts, so 52.7 s earns 338.5 basic points.</li>
+        <li><strong>1000 m run:</strong> 100 points for every 55 seconds faster than 6:30, or about 1.8 points per second. Times are in whole seconds.</li>
       </ul>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Points</th><th>Sprint</th><th>Hang</th><th>1000 m run</th></tr></thead>
           <tbody>
-            <tr><td>100 (minimum)</td><td>60 s</td><td>5 s</td><td>6:30</td></tr>
-            <tr><td>200</td><td>54 s</td><td>25 s</td><td>5:35</td></tr>
-            <tr><td>300</td><td>48 s</td><td>45 s</td><td>4:40</td></tr>
-            <tr><td>400</td><td>42 s</td><td>65 s</td><td>3:45</td></tr>
-            <tr><td>500 (maximum)</td><td>36 s</td><td>85 s</td><td>2:50</td></tr>
+            <tr><td>100 (minimum)</td><td>60.0 s</td><td>5 s</td><td>6:30</td></tr>
+            <tr><td>200</td><td>53.3 s</td><td>25 s</td><td>5:35</td></tr>
+            <tr><td>300</td><td>46.7 s</td><td>45 s</td><td>4:40</td></tr>
+            <tr><td>400</td><td>40.0 s</td><td>65 s</td><td>3:45</td></tr>
+            <tr><td>500 (maximum)</td><td>33.3 s</td><td>85 s</td><td>2:50</td></tr>
           </tbody>
         </table>
       </div>
-      <p>These are your <strong>basic points</strong>. Each event's final score, including any bonuses, is capped at 500.</p>
+      <p>These are your <strong>basic points</strong>. Bonuses are added next, then each event's score is rounded to a whole number and capped at 500.</p>
     </section>
 
     <!-- 4 -->
@@ -82,27 +82,27 @@
         <li>Flexed-arm hang: +40% of basic points</li>
         <li>1000 m run: +15% of basic points</li>
       </ul>
-      <code class="formula">event score = basic + age bonus + gender bonus (max 500)</code>
+      <code class="formula">event score = basic + age bonus + gender bonus, rounded (max 500)</code>
       <h3>Worked example</h3>
-      <p>A 40-year-old female holds the flexed-arm hang for 45.6 seconds, which counts as 45 seconds and earns 300 basic points.</p>
+      <p>A 40-year-old female holds the flexed-arm hang for 45.6 seconds, which earns 303 basic points.</p>
       <ul>
-        <li>Age bonus: 300 × 5 × 0.005 = <strong>7.50</strong></li>
-        <li>Gender bonus: 300 × 0.40 = <strong>120</strong></li>
-        <li>Event score: 300 + 7.50 + 120 = <strong>427.50</strong></li>
+        <li>Age bonus: 303 × 5 × 0.005 = <strong>7.575</strong></li>
+        <li>Gender bonus: 303 × 0.40 = <strong>121.2</strong></li>
+        <li>Event score: 303 + 7.575 + 121.2 = 431.775, which rounds to <strong>432</strong></li>
       </ul>
     </section>
 
     <!-- 5 -->
     <section class="card">
       <h2><span class="step" aria-hidden="true">5</span>BFT average and levels</h2>
-      <p>Your three event scores are averaged and cut off at two decimal places, without rounding. For example, 1205 ÷ 3 = 401.66.</p>
+      <p>Your three event scores are averaged and rounded to the nearest whole number. For example, scores of 417, 400 and 382 average 399.67, which rounds to 400 for Gold.</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>BFT average</th><th>Rating</th><th>Level</th></tr></thead>
           <tbody>
-            <tr><td>100 – 199.99</td><td>Fair</td><td><span class="tag tag-fail">No Badge</span></td></tr>
-            <tr><td>200 – 299.99</td><td>Satisfactory</td><td><span class="tag tag-1">Bronze</span></td></tr>
-            <tr><td>300 – 399.99</td><td>Good</td><td><span class="tag tag-2">Silver</span></td></tr>
+            <tr><td>Below 200</td><td>Fair</td><td><span class="tag tag-fail">No Badge</span></td></tr>
+            <tr><td>200 – 299</td><td>Satisfactory</td><td><span class="tag tag-1">Bronze</span></td></tr>
+            <tr><td>300 – 399</td><td>Good</td><td><span class="tag tag-2">Silver</span></td></tr>
             <tr><td>400 and above</td><td>Very Good</td><td><span class="tag tag-3">Gold</span></td></tr>
           </tbody>
         </table>
