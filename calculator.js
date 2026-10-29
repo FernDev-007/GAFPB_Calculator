@@ -9,8 +9,10 @@
 const CONFIG = {
   age: { min: 17, max: 65, bonusFrom: 36, bonusPerYear: 0.005 },
 
-  // Final event score (basic + bonuses, rounded) is capped at this value.
-  eventCap: 500,
+  // Event scores have no maximum: beating the 500-point mark keeps
+  // earning points at the same rate, matching the grading spreadsheet.
+  // To cap event scores again, set this to a number (e.g. 500).
+  eventCap: null,
 
   // 11 x 10 m sprint: 60 s = 100 pts, +15 pts per second faster.
   // (Same as the spreadsheet's 1000 - 15 x time.) Exact time counts.
@@ -140,8 +142,8 @@ function eventScore(basic, age, gender, key) {
     ageBonus: ageBonus,
     genderBonus: genderBonus,
     rounded: rounded,
-    total: Math.min(CONFIG.eventCap, rounded),
-    capped: rounded > CONFIG.eventCap
+    total: CONFIG.eventCap ? Math.min(CONFIG.eventCap, rounded) : rounded,
+    capped: !!CONFIG.eventCap && rounded > CONFIG.eventCap
   };
 }
 
